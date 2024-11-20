@@ -1,6 +1,10 @@
 import { dbContext } from "../db/DbContext"
 
 class MissionsService {
+  async getRatMission(ratId) {
+    const missions = await dbContext.Missions.find({ ratId: ratId }).populate('location')
+    return missions
+  }
   async createMission(missionData) {
     const mission = await dbContext.Missions.create(missionData)
     await mission.populate('rat', '-name -picture')

@@ -1,3 +1,4 @@
+import { missionsService } from "../services/MissionsService";
 import { ratsService } from "../services/RatsService";
 import BaseController from "../utils/BaseController";
 
@@ -6,6 +7,7 @@ export class RatsController extends BaseController {
     super('api/rats')
     this.router
       .get('', this.getRats)
+      .get('/:ratId/missions', this.getRatMission)
   }
 
 
@@ -19,4 +21,13 @@ export class RatsController extends BaseController {
     }
   }
 
+  async getRatMission(request, response, next) {
+    try {
+      const ratId = request.params.ratId
+      const missions = await missionsService.getRatMission(ratId)
+      response.send(missions)
+    } catch (error) {
+      next(error)
+    }
+  }
 }
